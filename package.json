@@ -22,8 +22,7 @@
     "@angular/router": "^16.0.0",
     "@capacitor/android": "^5.0.3",
     "@capacitor/angular": "^2.0.3",
-    "@capacitor/cli": "^5.0.3",
-    "@capacitor/core": "^5.0.3",
+    "@capacitor/core": "^5.2.1",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free": "^6.4.0",
     "easytimer.js": "^4.5.4",
@@ -35,6 +34,7 @@
     "@angular-devkit/build-angular": "^16.0.0",
     "@angular/cli": "^16.1.4",
     "@angular/compiler-cli": "^16.0.0",
+    "@capacitor/cli": "^5.2.1",
     "@types/jasmine": "~4.3.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
@@ -42,7 +42,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "^4.9.3",
-    "@capacitor/cli": "latest"
+    "typescript": "^4.9.3"
   }
 }

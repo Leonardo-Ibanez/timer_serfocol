@@ -1,0 +1,8 @@
+{
+"appID": "com.ejemplo.app",
+"appName": "app",
+"bundleWebRuntime": false,
+"npmClient": "npm",
+"webDir": "dist/app",
+"cordova": {}
+}
