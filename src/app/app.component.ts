@@ -8,8 +8,41 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./app.component.css']
 })
 
-
+///////////////////////////// sdsdsdasdasdads hastaa aquiii
 export class AppComponent implements OnInit, OnDestroy {
+  contadores: { [key: string]: Contador } = {
+    biTrenGlobulus: {
+      id: 0,
+      nombre: 'biTrenGlobulus',
+      valor: 0,
+      fecha_hora: null,
+      operador: null,
+      linea: null,
+      turno: null,
+      maquina: null
+    },
+    biTrenNitens: {
+      id: 0,
+      nombre: 'biTrenNitens',
+      valor: 0,
+      fecha_hora: null,
+      operador: null,
+      linea: null,
+      turno: null,
+      maquina: null
+    },
+    camionExterno: {
+      id: 0,
+      nombre: 'camionExterno',
+      valor: 0,
+      fecha_hora: null,
+      operador: null,
+      linea: null,
+      turno: null,
+      maquina: null
+    }
+  };
+
   timers: { [key: string]: Timer } = {
     lineaDetenida: {
       timerRunning: false,
@@ -19,7 +52,8 @@ export class AppComponent implements OnInit, OnDestroy {
       stoptimernumber: null,
       operador: null,
       linea: null,
-      turno: null
+      turno: null,
+      maquina: null
     },
     lineaSinMadera: {
       timerRunning: false,
@@ -29,7 +63,8 @@ export class AppComponent implements OnInit, OnDestroy {
       stoptimernumber: null,
       operador: null,
       linea: null,
-      turno: null
+      turno: null,
+      maquina: null
     },
     LimpiezaBunker: {
       timerRunning: false,
@@ -39,7 +74,8 @@ export class AppComponent implements OnInit, OnDestroy {
       stoptimernumber: null,
       operador: null,
       linea: null,
-      turno: null
+      turno: null,
+      maquina: null
     },
     LimpiezaZonaAlimentacion: {
       timerRunning: false,
@@ -49,7 +85,8 @@ export class AppComponent implements OnInit, OnDestroy {
       stoptimernumber: null,
       operador: null,
       linea: null,
-      turno: null
+      turno: null,
+      maquina: null
     },
     Mantencion: {
       timerRunning: false,
@@ -59,7 +96,8 @@ export class AppComponent implements OnInit, OnDestroy {
       stoptimernumber: null,
       operador: null,
       linea: null,
-      turno: null
+      turno: null,
+      maquina: null
     },
     CambioDeTurno: {
       timerRunning: false,
@@ -69,7 +107,8 @@ export class AppComponent implements OnInit, OnDestroy {
       stoptimernumber: null,
       operador: null,
       linea: null,
-      turno: null
+      turno: null,
+      maquina: null
     },
     Colacion: {
       timerRunning: false,
@@ -79,8 +118,10 @@ export class AppComponent implements OnInit, OnDestroy {
       stoptimernumber: null,
       operador: null,
       linea: null,
-      turno: null
+      turno: null,
+      maquina: null
     }
+    
   };
 
   consoleLogs: string[] = [];  // DATOS PARA MOSTRAR 
@@ -99,117 +140,135 @@ export class AppComponent implements OnInit, OnDestroy {
   //contadorCamionNitens: number = 0;
   lastClickButtons: { [key: string]: number } = {};
 
-  constructor(private ngZone: NgZone, 
+  constructor(private ngZone: NgZone,
     private cdr: ChangeDetectorRef
     //,    private dialog: MatDialog
-    ) ////////////////borrando esto se arregla lo de la pantalla en blanco
-    { }    
+  ) ////////////////borrando esto se arregla lo de la pantalla en blanco
+  { }
 
-    toggleTimer(timerName: string): void {
-      const timer = this.timers[timerName];
-  
-      if (!timer.timerRunning) {
-        // Check if any other timer is already running
-        const runningTimer = Object.values(this.timers).find(t => t.timerRunning);
-        if (runningTimer) {
-          console.log(`No se puede iniciar el temporizador "${timerName}" porque "${runningTimer}" ya está en ejecución.`);
-          return;
-        }
-  
-        const currentDate = new Date();
-        timer.fechainicio = currentDate.toLocaleTimeString();
-        timer.starttimernumber = this.convertFecha(currentDate);
-  
-        this.intervalIds[timerName] = setInterval(() => {
-          this.updateTimer(timerName);
-        }, 1000);
-      } else {
-        const currentDate = new Date();
-        timer.fechafin = currentDate.toLocaleTimeString();
-        timer.stoptimernumber = this.convertFecha(currentDate);
-  
-        clearInterval(this.intervalIds[timerName]);
+  toggleTimer(timerName: string): void {
+    const timer = this.timers[timerName];
+
+    if (!timer.timerRunning) {
+      // Check if any other timer is already running
+      const runningTimer = Object.values(this.timers).find(t => t.timerRunning);
+      if (runningTimer) {
+        console.log(`No se puede iniciar el temporizador "${timerName}" porque "${runningTimer}" ya está en ejecución.`);
+        return;
       }
-      this.exportDataToJson();
-      timer.timerRunning = !timer.timerRunning;
-    }
-  
-    updateTimer(timerName: string): void {
-      const timer = this.timers[timerName];
+
       const currentDate = new Date();
-      const currentTimestamp = this.convertFecha(currentDate);
-      const elapsedTime = currentTimestamp - timer.starttimernumber!;
-  
-      const hours = Math.floor(elapsedTime / 3600);
-      const minutes = Math.floor((elapsedTime % 3600) / 60);
-      const seconds = Math.floor((elapsedTime % 3600) % 60);
-  
-      const timerValue = `${this.formatTime(hours)}:${this.formatTime(minutes)}:${this.formatTime(seconds)}`;
-  
-      this.ngZone.run(() => {
-        timerValue;
-      });
-    }
-  
-    formatTime(time: number): string {
-      return time < 10 ? `0${time}` : `${time}`;
-    }
-  
-    convertFecha(fecha: Date): number {
-      return Math.round(fecha.getTime() / 1000);
-    }
-  
-    resetTimer(timerName: string): void {
-      const timer = this.timers[timerName];
-  
-      clearInterval(this.intervalIds[timerName]);
-      timer.timerRunning = false;
-      timer.fechainicio = null;
+      timer.fechainicio = this.formatDateTime(currentDate);
+      timer.starttimernumber = this.convertFecha(currentDate);
+
+      // Resetear el valor de fechafin a null si está definido
       timer.fechafin = null;
-      timer.starttimernumber = null;
-      timer.stoptimernumber = null;
+
+      // Eliminar el último valor de stoptimernumber si existe
+      if (timer.stoptimernumber) {
+        this.removeLastStopTime(timerName);
+      }
+
+      this.intervalIds[timerName] = setInterval(() => {
+        this.updateTimer(timerName);
+      }, 1000);
+    } else {
+      const currentDate = new Date();
+      timer.fechafin = this.formatDateTime(currentDate);
+      timer.stoptimernumber = this.convertFecha(currentDate);
+
+      clearInterval(this.intervalIds[timerName]);
     }
-  
-    stopAllTimers(): void {
-      for (const timerName in this.timers) {
-        if (this.timers.hasOwnProperty(timerName)) {
-          const timer = this.timers[timerName];
-  
-          if (timer.timerRunning) {
-            clearInterval(this.intervalIds[timerName]);
-            timer.timerRunning = false;
-            timer.fechafin = null;
-            timer.starttimernumber = null;
-            timer.stoptimernumber = null;
-          }
+
+    this.exportDataToJson();
+    timer.timerRunning = !timer.timerRunning;
+  }
+
+  removeLastStopTime(timerName: string): void {
+    const timer = this.timers[timerName];
+    const contadorIndex = this.contadores2.findIndex(c => c.nombre === timerName);
+
+    if (contadorIndex !== -1) {
+      this.contadores2[contadorIndex].fecha_hora = this.contadores2[contadorIndex].fecha_hora.replace(/ \d{2}:\d{2}:\d{2}$/, '');
+      this.exportDataToJson();
+    }
+  }
+
+  updateTimer(timerName: string): void {
+    const timer = this.timers[timerName];
+    const currentDate = new Date();
+    const currentTimestamp = this.convertFecha(currentDate);
+    const elapsedTime = currentTimestamp - timer.starttimernumber!;
+
+    const hours = Math.floor(elapsedTime / 3600);
+    const minutes = Math.floor((elapsedTime % 3600) / 60);
+    const seconds = Math.floor((elapsedTime % 3600) % 60);
+
+    const timerValue = `${this.formatTime(hours)}:${this.formatTime(minutes)}:${this.formatTime(seconds)}`;
+
+    this.ngZone.run(() => {
+      timerValue;
+    });
+  }
+
+  formatTime(time: number): string {
+    return time < 10 ? `0${time}` : `${time}`;
+  }
+
+  convertFecha(fecha: Date): number {
+    return Math.round(fecha.getTime() / 1000);
+  }
+
+  resetTimer(timerName: string): void {
+    const timer = this.timers[timerName];
+
+    clearInterval(this.intervalIds[timerName]);
+    timer.timerRunning = false;
+    timer.fechainicio = null;
+    timer.fechafin = null;
+    timer.starttimernumber = null;
+    timer.stoptimernumber = null;
+  }
+
+  stopAllTimers(): void {
+    for (const timerName in this.timers) {
+      if (this.timers.hasOwnProperty(timerName)) {
+        const timer = this.timers[timerName];
+
+        if (timer.timerRunning) {
+          clearInterval(this.intervalIds[timerName]);
+          timer.timerRunning = false;
+          timer.fechafin = null;
+          timer.starttimernumber = null;
+          timer.stoptimernumber = null;
         }
       }
     }
-  
-    
-    stopTimer(timerName: string): void {
-      const timer = this.timers[timerName];
-    
-      if (timer.timerRunning) {
-        timer.timerRunning = false;
-        const currentDate = new Date();
-        timer.fechafin = currentDate.toLocaleTimeString();
-        timer.stoptimernumber = this.convertFechaToNumber(currentDate);
-        window.cancelAnimationFrame(this.intervalIds[timerName]);
-        this.currentDateTime = '';
-    
-        console.log('Fin Timer', timerName, timer.fechafin);
-    
-        const elapsedTime = this.getElapsedTimeDifference(timer);
-        console.log('Tiempo transcurrido:', elapsedTime);
-    
-        // Agregar el timer a timers2
-        this.timers2Counter++;
-        this.timers2.push({ id: this.timers2Counter, nombre: timerName, timer: { ...timer } });
-        this.exportDataToJson();
-      }
+  }
+
+
+  stopTimer(timerName: string): void {
+    const timer = this.timers[timerName];
+
+    if (timer.timerRunning) {
+      timer.timerRunning = false;
+      const currentDate = new Date();
+      timer.fechafin = this.formatDateTime(currentDate);
+      timer.stoptimernumber = this.convertFechaToNumber(currentDate);
+      window.cancelAnimationFrame(this.intervalIds[timerName]);
+      this.currentDateTime = '';
+
+      console.log('Fin Timer', timerName, timer.fechafin);
+
+      const elapsedTime = this.getElapsedTimeDifference(timer);
+      console.log('Tiempo transcurrido:', elapsedTime);
+
+      // Agregar el timer a timers2
+      this.timers2Counter++;
+      this.timers2.push({ id: this.timers2Counter, nombre: timerName, timer: { ...timer } });
+      this.exportDataToJson();
     }
-    
+  }
 
   getElapsedTimeDifference(timer: Timer): string {
     const start = timer.starttimernumber ? new Date(timer.starttimernumber) : null;
@@ -227,6 +286,16 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     return '';
+  }
+
+  formatDateTime(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
   }
 
   convertFechaToNumber(date: Date): number {
@@ -252,12 +321,25 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   logClickDate(contador: string, currentTime: number): void {
-    const clickDate = new Date(currentTime).toLocaleString();
-    console.log(`Fecha de clic en ${contador}:`, clickDate);
+    const clickDate = new Date(currentTime);
+    const day = clickDate.getDate().toString().padStart(2, '0');
+    const month = (clickDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = clickDate.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+
+    // Formatear la hora con ceros a la izquierda
+    const hours = clickDate.getHours().toString().padStart(2, '0');
+    const minutes = clickDate.getMinutes().toString().padStart(2, '0');
+    const seconds = clickDate.getSeconds().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    // Usar espacio como separador entre fecha y hora
+    const formattedDateTime = `${formattedDate}  ${formattedTime}`;
+    console.log(`Fecha de clic en ${contador}: ${formattedDateTime}`);
 
     // Agregar el contador a contadores2 con la fecha del clic
     this.contadores2Counter++;
-    this.contadores2.push({ id: this.contadores2Counter, nombre: contador, valor: this.getContadorValue(contador), fecha_hora: clickDate });
+    this.contadores2.push({ id: this.contadores2Counter, nombre: contador, valor: this.getContadorValue(contador), fecha_hora: formattedDateTime });
   }
 
   //////////////////////////////////////////
@@ -269,14 +351,19 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
   aumentarContador(contador: string): void {
-    if (this.isAnyTimerRunning() || this.isAnyCounterDecreased()){
+    if (this.isAnyTimerRunning() || this.isAnyCounterDecreased()) {
       alert('Debes reactivar la línea para poder aumentar el contador');
       return;
     }
-  
+
     const currentTime = Date.now();
     const lastClickTime = this.lastClickButtons[contador];
-  
+    let operador: string | null = null;
+    let linea: string | null = null;
+    let turno: string | null = null;
+    let maquina: string | null = null;
+
+
     if (!lastClickTime || (currentTime - lastClickTime) >= 120000) {
       // Permitir incrementar el contador
       switch (contador) {
@@ -284,22 +371,35 @@ export class AppComponent implements OnInit, OnDestroy {
           this.contadorBiTrenGlobulus++;
           console.log('Contador BiTren Globulus:', this.contadorBiTrenGlobulus);
           this.logClickDate(contador, currentTime); // Guardar la fecha del clic
+          console.log(`Operador: ${operador}`);
+          console.log(`Línea: ${linea}`);
+          console.log(`Turno: ${turno}`);
+          console.log(`Máquina: ${maquina}`);
           break;
         case 'biTrenNitens':
           this.contadorBiTrenNitens++;
           console.log('Contador BiTren Nitens:', this.contadorBiTrenNitens);
           this.logClickDate(contador, currentTime); // Guardar la fecha del clic
+          console.log(`Operador: ${operador}`);
+          console.log(`Línea: ${linea}`);
+          console.log(`Turno: ${turno}`);
+          console.log(`Máquina: ${maquina}`);
           break;
         case 'camionExterno':
           this.contadorCamionExterno++;
           console.log('Contador Camión Externo:', this.contadorCamionExterno);
           this.logClickDate(contador, currentTime); // Guardar la fecha del clic
+          console.log(`Operador: ${operador}`);
+          console.log(`Línea: ${linea}`);
+          console.log(`Turno: ${turno}`);
+          console.log(`Máquina: ${maquina}`);
           break;
         // Agrega casos para otros contadores si es necesario
         default:
           break;
+
       }
-  
+
       // Actualizar el último tiempo de clic
       this.lastClickButtons[contador] = currentTime;
     } else {
@@ -307,7 +407,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const buttonName = this.getButtonName(contador);
       alert(`El botón "${buttonName}" está bloqueado. Espere 2 minutos para poder hacer clic nuevamente.`);
     }
-  
+
     this.exportDataToJson();
   }
 
@@ -444,54 +544,54 @@ export class AppComponent implements OnInit, OnDestroy {
       alert('No puedes restar al contador si la línea está detenida');
       return;
     }
-  
+
     if (this.contadorBiTrenGlobulus > 0) {
       this.contadorBiTrenGlobulus--;
       this.removeLastClickDate('biTrenGlobulus'); // Corregir el nombre del contador aquí
       this.exportDataToJson();
       console.log('Revertido el último clic en BiTren Globulus');
     }
-  
+
     const currentTime = Date.now();
     this.lastClickButtons['biTrenGlobulus'] = currentTime - 120000; // Corregir el nombre del contador aquí
   }
-  
-  
-  
+
+
+
   restarUnoBiTrenNitens(): void {
     if (this.isAnyTimerRunning()) {
       alert('No puedes restar al contador si la línea está detenida');
       return;
     }
-  
+
     if (this.contadorBiTrenNitens > 0) {
       this.contadorBiTrenNitens--;
       this.removeLastClickDate('biTrenNitens');
       this.exportDataToJson();
       console.log('Revertido el último clic en BiTren Nitens');
     }
-  
+
     const currentTime = Date.now();
     this.lastClickButtons['biTrenNitens'] = currentTime - 120000;
   }
-  
+
   restarUnoCamionExterno(): void {
     if (this.isAnyTimerRunning()) {
       alert('No puedes restar al contador si la línea está detenida');
       return;
     }
-  
+
     if (this.contadorCamionExterno > 0) {
       this.contadorCamionExterno--;
       this.removeLastClickDate('camionExterno');
       this.exportDataToJson();
       console.log('Revertido el último clic en Camión Externo');
     }
-  
+
     const currentTime = Date.now();
     this.lastClickButtons['camionExterno'] = currentTime - 120000;
   }
-  
+
   confirmarRestar(contador: string): void {
     const confirmacion = confirm(`¿Está seguro que desea restar 1 a ${contador}?`);
     if (confirmacion) {
@@ -536,6 +636,17 @@ interface Timer {
   stoptimernumber: number | null;
   operador: null,
   linea: null,
-  turno: null
+  turno: null,
+  maquina: null
 }
 
+interface Contador {
+  id: number;
+  nombre: string;
+  valor: number;
+  fecha_hora: null;
+  operador: string | null;
+  linea: string | null;
+  turno: string | null;
+  maquina: string | null;
+}

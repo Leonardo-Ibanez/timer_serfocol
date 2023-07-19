@@ -43,7 +43,7 @@
         <div class="button-container" (click)="toggleTimer('lineaDetenida')"
         [ngClass]="{'running': timers['lineaDetenida'].timerRunning, 'stopped': !timers['lineaDetenida'].timerRunning}">
         <div class="timer-button">
-          <div *ngIf="!timers['lineaDetenida'].timerRunning">Detención de Producción</div>
+          <div *ngIf="!timers['lineaDetenida'].timerRunning">Detención de Producción<div><i class="fa fa-stop"></i></div></div>
           <div *ngIf="timers['lineaDetenida'].timerRunning">Reactivar Línea de Producción
             <div><i class="fa fa-play"></i></div>
           </div>
@@ -53,7 +53,7 @@
         <div class="button-container" (click)="toggleTimer('lineaSinMadera')"
           [ngClass]="{'running': timers['lineaSinMadera'].timerRunning, 'stopped': !timers['lineaSinMadera'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['lineaSinMadera'].timerRunning">Línea sin Madera</div>
+            <div *ngIf="!timers['lineaSinMadera'].timerRunning">Línea sin Madera<div><i class="fa fa-stop"></i></div></div>
             <div *ngIf="timers['lineaSinMadera'].timerRunning">
               Reactivar Línea sin Madera
               <div><i class="fa fa-play"></i></div>
@@ -64,7 +64,7 @@
         <div class="button-container" (click)="toggleTimer('LimpiezaBunker')"
           [ngClass]="{'running': timers['LimpiezaBunker'].timerRunning, 'stopped': !timers['LimpiezaBunker'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['LimpiezaBunker'].timerRunning">Limpieza de Bunker</div>
+            <div *ngIf="!timers['LimpiezaBunker'].timerRunning">Limpieza de Bunker<div><i class="fa fa-stop"></i></div></div>
             <div *ngIf="timers['LimpiezaBunker'].timerRunning">
               Reactivar Línea por Limpieza de Bunker
               <div><i class="fa fa-play"></i></div>
@@ -77,7 +77,7 @@
         <div class="button-container" (click)="toggleTimer('LimpiezaZonaAlimentacion')"
           [ngClass]="{'running': timers['LimpiezaZonaAlimentacion'].timerRunning, 'stopped': !timers['LimpiezaZonaAlimentacion'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['LimpiezaZonaAlimentacion'].timerRunning">Limpieza Zona Alimentación </div>
+            <div *ngIf="!timers['LimpiezaZonaAlimentacion'].timerRunning">Limpieza Zona Alimentación<div><i class="fa fa-stop"></i></div> </div>
             <div *ngIf="timers['LimpiezaZonaAlimentacion'].timerRunning">
               Reactivar Línea por Limpieza de Zona de Alimentación
               <div><i class="fa fa-play"></i></div>
@@ -88,7 +88,7 @@
         <div class="button-container" (click)="toggleTimer('Mantencion')"
           [ngClass]="{'running': timers['Mantencion'].timerRunning, 'stopped': !timers['Mantencion'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['Mantencion'].timerRunning">Mantención</div>
+            <div *ngIf="!timers['Mantencion'].timerRunning">Mantención<div><i class="fa fa-stop"></i></div></div>
             <div *ngIf="timers['Mantencion'].timerRunning">
               Reactivar Línea por Mantención
               <div><i class="fa fa-play"></i></div>
@@ -99,7 +99,7 @@
         <div class="button-container" (click)="toggleTimer('CambioDeTurno')"
           [ngClass]="{'running': timers['CambioDeTurno'].timerRunning, 'stopped': !timers['CambioDeTurno'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['CambioDeTurno'].timerRunning">Cambio de Turno</div>
+            <div *ngIf="!timers['CambioDeTurno'].timerRunning">Cambio de Turno<div><i class="fa fa-stop"></i></div></div>
             <div *ngIf="timers['CambioDeTurno'].timerRunning">
               Reactivar Línea por Cambio de Turno
               <div><i class="fa fa-play"></i></div>
@@ -110,7 +110,7 @@
         <div class="button-container" (click)="toggleTimer('Colacion')"
           [ngClass]="{'running': timers['Colacion'].timerRunning, 'stopped': !timers['Colacion'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['Colacion'].timerRunning">Colación</div>
+            <div *ngIf="!timers['Colacion'].timerRunning">Colación<div><i class="fa fa-stop"></i></div></div>
             <div *ngIf="timers['Colacion'].timerRunning">
               Reactivar Línea por Colación
               <div><i class="fa fa-play"></i></div>
