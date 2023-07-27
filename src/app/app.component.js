@@ -118,3 +118,5 @@ document.getElementById('biTrenNitensButton').addEventListener('click', function
 document.getElementById('camionNitensButton').addEventListener('click', function() {
   app.aumentarContador('camionNitens');
 });
+
+

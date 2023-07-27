@@ -52,7 +52,9 @@ body {
   padding: 5px 8px; /* Cambia los valores de padding según tus necesidades */
   font-size: 14px; /* Cambia el tamaño de fuente según tus necesidades */
 /* BOTONES RESTAR */
-
+}
+.selector{
+  border-radius: 20px
 }
 
 .content-row {

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
- 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -16,7 +16,7 @@
   <!--ENCABEZADO-->
   <div class="container">
     <div class="top-row">
-      <img src="assets/logo.png" alt="Logo de la empresa" class="logo">
+      <img src="assets/logo-o.png" alt="Logo de la empresa" class="logo">
 
       <button class="btn btn-primary" (click)="confirmarRestar('biTrenGlobulus')">
         <i class="fa fa-minus"></i> BitrenGlobulus
@@ -25,10 +25,75 @@
       <button class="btn btn-primary" (click)="confirmarRestar('biTrenNitens')">
         <i class="fa fa-minus"></i> BitrenNitens
       </button>
-      
-      <button class="btn btn-primary" (click)="confirmarRestar('camionExterno')">
+
+      <button class="btn btn-primary" (click)="confirmarRestar('camion')">
         <i class="fa fa-minus"></i> CamiónExterno
       </button>
+
+      <select class="selector" #operadorSelect (change)="operador = operadorSelect.value" style="width: 100px;" style="height: 30px;">
+        <option value disabled selected ="">OPERADOR</option>
+        <option value="13606612-9">Alan Calderón</option>
+        <option value="13146774-5">Jose Tomás Torres</option>
+        <option value="10743911-0">Reinaldo Zuñiga</option>
+        <option value="14066850-8">Manuel Fuentes</option>
+        <option value="19596839-k">Fabian Sanhueza</option>
+        <option value="17445682-8">Peter Paredes</option>
+        <option value="18813681-8">David Arevalo</option>
+        <option value="12767900-2">Victor Yaupe</option>
+        <option value="11699041-5">Victor Burgos</option>
+        <option value="15197944-0">Cristian Alarcon</option>
+        <option value="10794991-7">Hipolito Cea</option>
+        <option value="17081103-8">Daniel Jara</option>
+        <option value="17789692-6">Leonardo Chavez</option>
+        <option value="15914808-4">Jorge Salazar</option>
+        <option value="16327488-4">Juan Torres</option>
+        <option value="9270994-9">Hugo Daza</option>
+        <option value="14510456-4">Hector Ocampo</option>
+        <option value="9249442-k">Juan Vallejos</option>
+        <option value="17548600-3">Pablo Neira</option>
+        <option value="17548353-5">Gabriel Rebolledo</option>
+        <option value="8811529-5">Omar Pino</option>
+        <option value="17969950-8">Sergio Suazo</option>
+        <option value="18150188-k">Segundo Huerta</option>
+        <option value="9888909-4">Anamel Aillon</option>
+        <option value="13803123-3">Gerardo Lopez</option>
+        <option value="15529835-9">Jose Bravo</option>
+        <option value="8606078-7">Reinier Garcia</option>
+        <option value="12071485-6">Patricio Oliveros</option>
+        <option value="10499612-4">Patricio Cuervo</option>
+        <option value="13238889-k">Alex Mardones</option>
+        <option value="15221738-2">Raul Torres</option>
+        <option value="17844592-8">Mirko Cavieres</option>
+        <option value="10911779-k">Juan Cañoles</option>
+        
+        <!-- Agrega más opciones si es necesario -->
+      </select>
+
+      <select class="selector" #maquinaSelect (change)="maquina = maquinaSelect.value" style="width: 90px;" style="height: 30px;">
+        <option value disabled selected="">MÁQUINA</option>
+        <option value="1105">1105</option>
+        <option value="1106">1106</option>
+        <option value="1107">1107</option>
+        <option value="1108">1108</option>
+        <option value="1109">1109</option>
+        <!-- Agrega más opciones si es necesario -->
+      </select>
+
+      <select class="selector" #turnoSelect (change)="turno = turnoSelect.value" style="width: 70px;" style="height: 30px;">
+        <option value disabled selected="">TURNO</option>
+        <option value="Dia">Día</option>
+        <option value="Noche">Noche</option>
+        <!-- Agrega más opciones si es necesario -->
+      </select>
+
+      <select class="selector" #lineaSelect (change)="linea = lineaSelect.value" style="width: 70px;" style="height: 30px;">
+        <option value disabled selected="">LÍNEA</option>
+        <option value="linea1">Línea 1</option>
+        <option value="linea2">Línea 2</option>
+        <option value="linea3">Línea 3</option>
+        <option value="linea4">Línea 4</option>
+        <!-- Agrega más opciones si es necesario -->
+      </select>
 
       <div class="clock">
         {{ currentDateTime }}
@@ -37,23 +102,25 @@
 
     <!--CONTAINER CON TIMERS Y COUNTERS-->
     <div class="content-row">
-
       <div class="left-column">
 
         <div class="button-container" (click)="toggleTimer('lineaDetenida')"
-        [ngClass]="{'running': timers['lineaDetenida'].timerRunning, 'stopped': !timers['lineaDetenida'].timerRunning}">
-        <div class="timer-button">
-          <div *ngIf="!timers['lineaDetenida'].timerRunning">Detención de Producción<div><i class="fa fa-stop"></i></div></div>
-          <div *ngIf="timers['lineaDetenida'].timerRunning">Reactivar Línea de Producción
-            <div><i class="fa fa-play"></i></div>
+          [ngClass]="{'running': timers['lineaDetenida'].timerRunning, 'stopped': !timers['lineaDetenida'].timerRunning}">
+          <div class="timer-button">
+            <div *ngIf="!timers['lineaDetenida'].timerRunning">Detención de Producción<div><i class="fa fa-stop"></i>
+              </div>
+            </div>
+            <div *ngIf="timers['lineaDetenida'].timerRunning">Reactivar Línea de Producción
+              <div><i class="fa fa-play"></i></div>
+            </div>
           </div>
         </div>
-      </div>
 
         <div class="button-container" (click)="toggleTimer('lineaSinMadera')"
           [ngClass]="{'running': timers['lineaSinMadera'].timerRunning, 'stopped': !timers['lineaSinMadera'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['lineaSinMadera'].timerRunning">Línea sin Madera<div><i class="fa fa-stop"></i></div></div>
+            <div *ngIf="!timers['lineaSinMadera'].timerRunning">Línea sin Madera<div><i class="fa fa-stop"></i></div>
+            </div>
             <div *ngIf="timers['lineaSinMadera'].timerRunning">
               Reactivar Línea sin Madera
               <div><i class="fa fa-play"></i></div>
@@ -64,7 +131,8 @@
         <div class="button-container" (click)="toggleTimer('LimpiezaBunker')"
           [ngClass]="{'running': timers['LimpiezaBunker'].timerRunning, 'stopped': !timers['LimpiezaBunker'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['LimpiezaBunker'].timerRunning">Limpieza de Bunker<div><i class="fa fa-stop"></i></div></div>
+            <div *ngIf="!timers['LimpiezaBunker'].timerRunning">Limpieza de Bunker<div><i class="fa fa-stop"></i></div>
+            </div>
             <div *ngIf="timers['LimpiezaBunker'].timerRunning">
               Reactivar Línea por Limpieza de Bunker
               <div><i class="fa fa-play"></i></div>
@@ -77,7 +145,9 @@
         <div class="button-container" (click)="toggleTimer('LimpiezaZonaAlimentacion')"
           [ngClass]="{'running': timers['LimpiezaZonaAlimentacion'].timerRunning, 'stopped': !timers['LimpiezaZonaAlimentacion'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['LimpiezaZonaAlimentacion'].timerRunning">Limpieza Zona Alimentación<div><i class="fa fa-stop"></i></div> </div>
+            <div *ngIf="!timers['LimpiezaZonaAlimentacion'].timerRunning">Limpieza Zona Alimentación<div><i
+                  class="fa fa-stop"></i></div>
+            </div>
             <div *ngIf="timers['LimpiezaZonaAlimentacion'].timerRunning">
               Reactivar Línea por Limpieza de Zona de Alimentación
               <div><i class="fa fa-play"></i></div>
@@ -88,7 +158,8 @@
         <div class="button-container" (click)="toggleTimer('Mantencion')"
           [ngClass]="{'running': timers['Mantencion'].timerRunning, 'stopped': !timers['Mantencion'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['Mantencion'].timerRunning">Mantención<div><i class="fa fa-stop"></i></div></div>
+            <div *ngIf="!timers['Mantencion'].timerRunning">Mantención<div><i class="fa fa-stop"></i></div>
+            </div>
             <div *ngIf="timers['Mantencion'].timerRunning">
               Reactivar Línea por Mantención
               <div><i class="fa fa-play"></i></div>
@@ -99,7 +170,8 @@
         <div class="button-container" (click)="toggleTimer('CambioDeTurno')"
           [ngClass]="{'running': timers['CambioDeTurno'].timerRunning, 'stopped': !timers['CambioDeTurno'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['CambioDeTurno'].timerRunning">Cambio de Turno<div><i class="fa fa-stop"></i></div></div>
+            <div *ngIf="!timers['CambioDeTurno'].timerRunning">Cambio de Turno<div><i class="fa fa-stop"></i></div>
+            </div>
             <div *ngIf="timers['CambioDeTurno'].timerRunning">
               Reactivar Línea por Cambio de Turno
               <div><i class="fa fa-play"></i></div>
@@ -110,7 +182,8 @@
         <div class="button-container" (click)="toggleTimer('Colacion')"
           [ngClass]="{'running': timers['Colacion'].timerRunning, 'stopped': !timers['Colacion'].timerRunning}">
           <div class="timer-button">
-            <div *ngIf="!timers['Colacion'].timerRunning">Colación<div><i class="fa fa-stop"></i></div></div>
+            <div *ngIf="!timers['Colacion'].timerRunning">Colación<div><i class="fa fa-stop"></i></div>
+            </div>
             <div *ngIf="timers['Colacion'].timerRunning">
               Reactivar Línea por Colación
               <div><i class="fa fa-play"></i></div>
@@ -119,103 +192,28 @@
         </div>
       </div>
 
-
-      <!--   /////// BOTONES CON TODOS LOS DETALLES VISIBLES
-        <div class="button-container" (click)="toggleTimer('lineaDetenida')"
-          [ngClass]="{'running': timers['lineaDetenida'].timerRunning, 'stopped': !timers['lineaDetenida'].timerRunning}">
-          <div class="timer-button">
-            <div>Línea Mecánica Detenida</div>
-            <!--{{ getButtonLabel(timers['lineaDetenida']) }} --  COMENTAR AQUÍ
-            <div class="hora detención">Detención: {{ timers['lineaDetenida'].fechainicio }} Reactivación: {{
-              timers['lineaDetenida'].fechafin }}</div>
-            <div class="hora actual"> </div>
-            <div>Tiempo Detenido:{{ getElapsedTimeDifference(timers['lineaDetenida']) }} </div>
-          </div>
-        </div>
-        <div class="button-container" (click)="toggleTimer('lineaSinMadera')"
-          [ngClass]="{'running': timers['lineaSinMadera'].timerRunning, 'stopped': !timers['lineaSinMadera'].timerRunning}">
-          <div class="timer-button">
-            <div>Línea Sin Madera</div>
-            <!--  {{ getButtonLabel(timers['lineaSinMadera']) }} -- COMENTAR AQUÍ
-            <div class="hora inicio">Detención: {{ timers['lineaSinMadera'].fechainicio }} Reactivación: {{
-              timers['lineaSinMadera'].fechafin }} </div>
-            <div class="hora fin"> </div>
-            <div>Tiempo Total sin Madera: {{ getElapsedTimeDifference(timers['lineaSinMadera']) }} </div>
-          </div>
-        </div>
-        <div class="button-container" (click)="toggleTimer('LimpiezaBunker')"
-          [ngClass]="{'running': timers['LimpiezaBunker'].timerRunning, 'stopped': !timers['LimpiezaBunker'].timerRunning}">
-          <div class="timer-button">
-            <div>Limpieza Bunker</div>
-            <!--   {{ getButtonLabel(timers['LimpiezaBunker']) }}-- COMENTAR AQUÍ
-            <div class="hora detención">Detención: {{ timers['LimpiezaBunker'].fechainicio }} Reactivación: {{
-              timers['LimpiezaBunker'].fechafin }} </div>
-            <div class="hora actual"> </div>
-            <div>Tiempo Detenido:{{ getElapsedTimeDifference(timers['LimpiezaBunker']) }} </div>
-          </div>
-        </div>
-        <div class="button-container" (click)="toggleTimer('LimpiezaZonaAlimentacion')"
-          [ngClass]="{'running': timers['LimpiezaZonaAlimentacion'].timerRunning, 'stopped': !timers['LimpiezaZonaAlimentacion'].timerRunning}">
-          <div class="timer-button">
-            <div>Limpieza Zona Alimentación</div>
-            <!-- {{ getButtonLabel(timers['LimpiezaZonaAlimentacion']) }}-- COMENTAR AQUÍ
-            <div class="hora detención">Detención: {{ timers['LimpiezaZonaAlimentacion'].fechainicio }}Reactivación: {{
-              timers['LimpiezaZonaAlimentacion'].fechafin }}</div>
-            <div class="hora actual"> </div>
-            <div>Tiempo Detenido:{{ getElapsedTimeDifference(timers['LimpiezaZonaAlimentacion']) }} </div>
-          </div>
-        </div>
-        <div class="button-container" (click)="toggleTimer('Mantencion')"
-          [ngClass]="{'running': timers['Mantencion'].timerRunning, 'stopped': !timers['Mantencion'].timerRunning}">
-          <div class="timer-button">
-            <div>Mantención</div>
-            <!--  {{ getButtonLabel(timers['Mantencion']) }} -- COMENTAR AQUÍ
-            <div class="hora detención">Detención: {{ timers['Mantencion'].fechainicio }} Reactivación: {{
-              timers['Mantencion'].fechafin }}</div>
-            <div class="hora actual"> </div>
-            <div>Tiempo Detenido:{{ getElapsedTimeDifference(timers['Mantencion']) }} </div>
-          </div>
-        </div>
-      </div>
-
-    -->
       <!--BOTONES CONTADORES-->
       <div class="middle-column">
         <div class="button-container">
-          <div class="timer-button " (click)="aumentarContador('biTrenGlobulus')">
+          <div class="timer-button " (click)="aumentarUno('biTrenGlobulus')">
             BiTren Glóbulus <span>{{ contadorBiTrenGlobulus }}</span>
           </div>
         </div>
         <div class="button-container">
-          <div class="timer-button " (click)="aumentarContador('biTrenNitens')">
+          <div class="timer-button " (click)="aumentarUno('biTrenNitens')">
             BiTren Nitens <span>{{ contadorBiTrenNitens }}</span>
           </div>
         </div>
         <div class="button-container">
-          <div class="timer-button button-inactive" (click)="aumentarContador('camionExterno')">
-            Camión Externo <span>{{ contadorCamionExterno }}</span>
+          <div class="timer-button" (click)="aumentarUno('camion')">
+            Camión Externo <span>{{ camion }}</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 </body>
-
 </html>
-
-
-<!--<button class="btn btn-primary" (click)="restarUnoCamionNitens()">
-        <i class="fa fa-minus"></i> Restar Camión Nitens
-      </button>
-
-      -->
-<!--
-  <div class="button-container">
-          <div class="timer-button button-inactive" (click)="aumentarContador('camionNitens')">
-            Camión Externo Nitens <span>{{ contadorCamionNitens }}</span>
-          </div>
-        </div>
--->
 
 <script>
   // Detectar si es un tablet y ejecutar el código para ocultar la barra de búsqueda
@@ -226,4 +224,12 @@
       window.scrollTo(0, 1); // Desplazar la página para ocultar la barra de búsqueda
     }, 1000); // Esperar 1 segundo antes de desplazar la página (ajusta este valor según tus necesidades)
   }
+</script>
+
+<script>
+  // Obtener las etiquetas select por su id
+  const operadorSelect = document.getElementById('operadorSelect');
+  const maquinaSelect = document.getElementById('maquinaSelect');
+  const turnoSelect = document.getElementById('turnoSelect');
+  const lineaSelect = document.getElementById('lineaSelect');
 </script>
