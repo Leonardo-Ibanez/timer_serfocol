@@ -25,6 +25,15 @@ interface Contador {
   maquina: string | null;
 }
 
+interface Ejercicio{
+  valor: number;
+  fecha_hora: string | null;
+  operador: string | null;
+  linea: string | null;
+  turno: string | null;
+  maquina: string | null;
+}
+
 interface SelectorData {
   operador: string | null;
   linea: string | null;
@@ -43,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
   linea: string | null = null;
   turno: string | null = null;
   maquina: string | null = null;
+  ejercicio: number = 0 ; // nuevo contador 
   eventos: any[] = [];
   selectedOperador: string | null = null;
   selectedLinea: string | null = null;
@@ -52,7 +62,11 @@ export class AppComponent implements OnInit, OnDestroy {
   private selectedLineaTemp: string | null = null;
   private selectedTurnoTemp: string | null = null;
   private selectedMaquinaTemp: string | null = null;
-
+  operadorIniciado: boolean = false;
+  estadoSesion: string | null = null;
+  mostrarBotonIniciarSesion = true;
+  textoBotonIniciar = 'Iniciar Sesión';
+  textoBotonCerrar = 'Cerrar Sesión';
 
   contadores: { [key: string]: Contador } = {
     biTrenGlobulus: {
@@ -84,9 +98,19 @@ export class AppComponent implements OnInit, OnDestroy {
       linea: null,
       turno: null,
       maquina: null
+    },
+    ejercicio: {
+      valor: 0,
+      fecha_hora: null,
+      operador: null,
+      linea: null,
+      turno: null,
+      maquina: null,
+      id: 0,
+      nombre: 'ejercicio compensatorio'
     }
+    
   };
-
 
   timers: { [key: string]: Timer } = {
     lineaDetenida: {
@@ -166,7 +190,7 @@ export class AppComponent implements OnInit, OnDestroy {
       turno: null,
       maquina: null
     },
-
+    
 
   };
 
@@ -189,34 +213,86 @@ export class AppComponent implements OnInit, OnDestroy {
     //,    private dialog: MatDialog
   ) { }
 
+  alternarSesion() {
+    if (!this.operador || !this.linea || !this.maquina || !this.turno) {
+      alert('Debes seleccionar operador, línea, máquina y turno antes de iniciar sesión.');
+      return; 
+    }
+    if (this.operadorIniciado) {
+      // Cerrar sesión
+      this.operadorIniciado = false;
+      this.estadoSesion = 'cerrado';
+    } else {
+      // Iniciar sesión
+      this.operadorIniciado = true;
+      this.estadoSesion = 'iniciado';
+    }
+
+    this.exportDataToJsonNew();
+  } 
+  
+  resetearValores(): void {
+    // Restablecer los valores de los selectores
+    this.operador = null;
+   // this.maquina = null;
+   //
+    this.linea = null;
+    this.turno = null;
+
+    // Restablecer los contadores y sus selectores a la opción "OPERADOR"
+    this.selectedOperador = null;
+    this.selectedOperadorTemp = null;
+
+    //this.selectedMaquina = null;
+   // this.selectedMaquinaTemp = null;
+
+   // this.selectedLinea = null;
+   // this.selectedLineaTemp = null;
+
+    this.selectedTurno = null;
+    this.selectedTurnoTemp = null;
+
+    // Restablecer el indicador de sesión iniciada
+    this.exportDataToJsonNew(); // Llamar a la función al iniciar sesión
+    this.operadorIniciado = true;
+  }
 
   toggleTimer(timerName: string): void {
     const timer = this.timers[timerName];
-  
+
     // Verificar si todos los campos están seleccionados
     const operador = this.operador;
     const maquina = this.maquina;
     const linea = this.linea;
     const turno = this.turno;
-  
-    if (!operador || !maquina || !linea || !turno) {
-      alert('Debes seleccionar operador, máquina, línea y turno antes de iniciar el temporizador.');
+
+    if (!this.operadorIniciado) {
+      alert('Debes iniciar sesión para utilizar los temporizadores.');
       return;
     }
-  
+
+    if (!timer.timerRunning) {
+      // Verificar si ya hay un temporizador en funcionamiento
+      const isAnyTimerRunning = Object.values(this.timers).some(t => t.timerRunning);
+      if (isAnyTimerRunning) {
+        alert('Ya hay un temporizador en funcionamiento. Debes detenerlo antes de iniciar otro.');
+        return;
+      }
+    }
+    0
     if (!timer.timerRunning) {
       // Obtener la fecha y hora de inicio del timer
       const startTime = new Date();
       const formattedStartTime = this.formatDateTime(startTime);
-  
+
       // Actualizar el objeto del timer
       timer.timerRunning = true;
       timer.fechainicio = formattedStartTime;
       timer.starttimernumber = startTime.getTime(); // Guardar el tiempo en milisegundos
-  
+
       // Buscar si ya existe un timer con el mismo nombre en timers2
       const existingTimerIndex = this.timers2.findIndex((timerItem) => timerItem.nombre === timerName);
-  
+
       if (existingTimerIndex !== -1) {
         // Si ya existe, actualizar el valor del timer en timers2
         this.timers2[existingTimerIndex].timer = {
@@ -249,14 +325,13 @@ export class AppComponent implements OnInit, OnDestroy {
           },
         });
       }
-  
+
       this.exportDataToJsonNew(); // Guardar los cambios en el JSON
     } else {
       // Detener el temporizador y guardar los cambios en el JSON
       this.stopTimer(timerName);
     }
   }
-  
 
   stopTimer(timerName: string): void {
     // Verificar si el timer está en funcionamiento
@@ -298,8 +373,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.exportDataToJsonNew(); // Guardar los cambios en el JSON
     }
   }
-
-
 
   removeLastStopTime(timerName: string): void {
     const timer = this.timers[timerName];
@@ -348,7 +421,6 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log('¡Contadores reiniciados a la medianoche!');
     }
   }
-
 
   formatTime(time: number): string {
     return time < 10 ? `0${time}` : `${time}`;
@@ -618,6 +690,36 @@ export class AppComponent implements OnInit, OnDestroy {
     this.exportDataToJsonNew(); // Save changes to JSON
   }
 
+  aumentarEjercicio(): void {
+    if (this.estadoSesion === 'iniciado') {
+      // Aumentar el contador
+      this.ejercicio++;
+  
+      // Guardar los cambios en el JSON
+      const operador = this.operador ? this.operador : null;
+      const maquina = this.maquina ? this.maquina : null;
+      const linea = this.linea ? this.linea : null;
+      const turno = this.turno ? this.turno : null;
+  
+     /* const formattedDateTime = this.formatDateTime(new Date());
+  
+      this.contadores2Counter++;
+      this.contadores2.push({
+        id: this.contadores2Counter,
+        nombre: 'aumentarEjercicio',
+        valor: this.ejercicio,
+        fecha_hora: formattedDateTime,
+        operador: operador,
+        linea: linea,
+        turno: turno,
+        maquina: maquina, 
+      }); */
+  
+      this.exportDataToJsonNew(); // Guardar cambios en el JSON
+    } else {
+      alert('Debes iniciar sesión para aumentar el ejercicio.');
+    }
+  }
 
   getContadorValue(contador: string): number {
     switch (contador) {
@@ -652,22 +754,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getTotalContador(): number {
     return this.contadorBiTrenGlobulus + this.contadorBiTrenNitens + this.camion;
-  }
-
-  exportDataToJson(): void {
-    const totalContadorId = this.contadores2Counter + 1; // ID incremental basada en contadores2Counter
-    const data = {
-      timers: this.timers,
-      contadores: this.contadores2,
-      totalContador: {
-        id: totalContadorId,
-        valor: this.getTotalContador()
-      }
-    };
-
-    const jsonData = JSON.stringify(data);
-    console.log(jsonData);
-
   }
 
   exportDataToJsonNew(): void {
@@ -723,28 +809,41 @@ export class AppComponent implements OnInit, OnDestroy {
       };
     });
   
-    // Recorrer contadores2 y actualizar el objeto auxiliar con el último valor para cada contador
-    this.contadores2.forEach((contador) => {
-      contadoresUnique[contador.nombre] = { ...contador };
-    });
+    // Objeto para almacenar los datos de ejercicio
+    const ejercicioData = {
+      id: 0,
+      nombre: 'ejercicio',
+      valor: this.ejercicio,
+      fecha_hora: null, // O cualquier fecha/hora que desees asignar
+      operador: this.operador ? this.operador : null,
+      linea: this.linea ? this.linea : null,
+      turno: this.turno ? this.turno : null,
+      maquina: this.maquina ? this.maquina : null,
+    };
   
-    // Generar el array de contadoresData a partir del objeto auxiliar
-    const contadoresData = Object.values(contadoresUnique);
+    // Agregar el estado de sesión según corresponda
+    const estadoSesion = this.estadoSesion;
   
     const data = {
       timers: timersData,
-      contadores: contadoresData,
+      contadores: Object.values(contadoresUnique),
       totalContador: {
         id: totalContadorId,
         valor: this.getTotalContador(),
       },
+      estadoSesion: estadoSesion,
+      ejercicio: ejercicioData,
     };
   
     const jsonData = JSON.stringify(data);
-    console.log(jsonData);
+    console.log(jsonData); // Aquí se muestra el JSON en la consola
   
+    // Si deseas retornar el JSON en lugar de mostrarlo en la consola, puedes usar:
+    // return jsonData;
   }
   
+  
+
   isAnyTimerRunning(): boolean {
     for (const timerName in this.timers) {
       if (this.timers[timerName].timerRunning) {
@@ -755,6 +854,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.textoBotonIniciar = this.estadoSesion === "iniciado" ? "Cerrar Sesión" : "Iniciar Sesión";
     this.updateClock();
     // Ejecutar checkAndResetCounters() cada 50 segundos
     setInterval(() => {
